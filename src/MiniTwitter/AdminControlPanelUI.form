@@ -133,9 +133,12 @@
             <Component class="javax.swing.JTree" name="treeList">
               <Properties>
                 <Property name="model" type="javax.swing.tree.TreeModel" editor="org.netbeans.modules.form.editors2.TreeModelEditor">
-                  <TreeModel code="Root&#xa; colors&#xa;  blue&#xa;  violet&#xa;  red&#xa;  yellow&#xa; sports&#xa;  basketball&#xa;  soccer&#xa;  football&#xa;  hockey&#xa; food&#xa;  hot dogs&#xa;  pizza&#xa;  ravioli&#xa;  bananas"/>
+                  <TreeModel code="JTree&#xa; colors&#xa;  blue&#xa;  violet&#xa;  red&#xa;  yellow&#xa;"/>
                 </Property>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTree()"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
@@ -164,6 +167,7 @@
         <Component class="javax.swing.JButton" name="addUserButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Add User"/>
+            <Property name="toolTipText" type="java.lang.String" value="Click to add user id to the list"/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[95, 29]"/>
             </Property>
@@ -171,6 +175,9 @@
               <Dimension value="[95, 29]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="addUserButtonMouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="addGroupButton">
           <Properties>
@@ -182,31 +189,49 @@
               <Dimension value="[95, 29]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="addGroupButtonMouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="userViewButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Open User View"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="userViewButtonMouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="usrTotalButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Show User Total"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="usrTotalButtonMouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="grpTotalButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Show Group Total"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="grpTotalButtonMouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="msgTotalButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Show Message Total"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="msgTotalButtonMouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="posPctButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Show Pos Pencentage"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="posPctButtonMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

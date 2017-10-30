@@ -14,6 +14,8 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
     private int usrSize;
     
     private int grpSize;
+    
+    private String[][] list = new String[0][0];
 
     /**
      * Creates new form AdminControlPanelUI
@@ -52,7 +54,7 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
 
         mainPanel.setForeground(new java.awt.Color(204, 204, 204));
 
-        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Root");
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("JTree");
         javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("colors");
         javax.swing.tree.DefaultMutableTreeNode treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("blue");
         treeNode2.add(treeNode3);
@@ -61,26 +63,6 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("red");
         treeNode2.add(treeNode3);
         treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("yellow");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("sports");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("basketball");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("soccer");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("football");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("hockey");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("food");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("hot dogs");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("pizza");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("ravioli");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("bananas");
         treeNode2.add(treeNode3);
         treeNode1.add(treeNode2);
         treeList.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
@@ -95,22 +77,58 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         groupIDText.setSize(new java.awt.Dimension(80, 25));
 
         addUserButton.setText("Add User");
+        addUserButton.setToolTipText("Click to add user id to the list");
         addUserButton.setPreferredSize(new java.awt.Dimension(95, 29));
         addUserButton.setSize(new java.awt.Dimension(95, 29));
+        addUserButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addUserButtonMouseClicked(evt);
+            }
+        });
 
         addGroupButton.setText("Add Group");
         addGroupButton.setPreferredSize(new java.awt.Dimension(95, 29));
         addGroupButton.setSize(new java.awt.Dimension(95, 29));
+        addGroupButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addGroupButtonMouseClicked(evt);
+            }
+        });
 
         userViewButton.setText("Open User View");
+        userViewButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                userViewButtonMouseClicked(evt);
+            }
+        });
 
         usrTotalButton.setText("Show User Total");
+        usrTotalButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                usrTotalButtonMouseClicked(evt);
+            }
+        });
 
         grpTotalButton.setText("Show Group Total");
+        grpTotalButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                grpTotalButtonMouseClicked(evt);
+            }
+        });
 
         msgTotalButton.setText("Show Message Total");
+        msgTotalButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                msgTotalButtonMouseClicked(evt);
+            }
+        });
 
         posPctButton.setText("Show Pos Pencentage");
+        posPctButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                posPctButtonMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -184,6 +202,51 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+//    private void displayTreeList() {
+//        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Root");
+//        javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("colors");
+//        javax.swing.tree.DefaultMutableTreeNode treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("blue");
+//        treeNode2.add(treeNode3);
+//        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("violet");
+//        treeNode1.add(treeNode2);
+//    }
+    
+    private void addUserButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addUserButtonMouseClicked
+        String text = userIDText.getText();
+        if(text.equals("Enter User ID") || text.equals("")) { 
+        } else {
+            
+        }
+    }//GEN-LAST:event_addUserButtonMouseClicked
+
+    private void addGroupButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addGroupButtonMouseClicked
+        String text = groupIDText.getText();
+        if(text.equals("Enter Group ID") || text.equals("")) {
+        } else {
+            
+        }
+    }//GEN-LAST:event_addGroupButtonMouseClicked
+
+    private void userViewButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userViewButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_userViewButtonMouseClicked
+
+    private void usrTotalButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usrTotalButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_usrTotalButtonMouseClicked
+
+    private void grpTotalButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_grpTotalButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_grpTotalButtonMouseClicked
+
+    private void msgTotalButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_msgTotalButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_msgTotalButtonMouseClicked
+
+    private void posPctButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_posPctButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_posPctButtonMouseClicked
 
     /**
      * @param args the command line arguments
