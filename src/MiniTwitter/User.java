@@ -3,10 +3,6 @@ package MiniTwitter;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author yyan
- */
 public class User {
     private String id;
     
