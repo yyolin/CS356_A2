@@ -20,6 +20,8 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
     
     private int grpSize = 0;
     
+    private int msgSize = 0;
+    
     private DefaultTreeModel treeModel = new DefaultTreeModel(root);
     
     /**
@@ -256,17 +258,6 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-//    private javax.swing.tree.DefaultMutableTreeNode tree() {
-//        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode(root.getID(), true);
-//        javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("");
-//        for(int i = 0; i < root.getUsrSize(); i++) {
-//            String usrID = root.getUser().get(i).getID();
-//            treeNode2 = new javax.swing.tree.DefaultMutableTreeNode(usrID, false);
-//            treeNode1.add(treeNode2);
-//        }
-//        return treeNode1;
-//    }
     
     private void usrTotalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usrTotalButtonActionPerformed
         dialogText.setText("Total Users: " + usrSize);
@@ -279,7 +270,7 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
     }//GEN-LAST:event_grpTotalButtonActionPerformed
 
     private void msgTotalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_msgTotalButtonActionPerformed
-        dialogText.setText("Total Messages: " + msgSize());
+        dialogText.setText("Total Messages: " + msgSize);
         dialog.setVisible(true);
     }//GEN-LAST:event_msgTotalButtonActionPerformed
 
@@ -363,13 +354,19 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
 
     private void userViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userViewButtonActionPerformed
         DefaultMutableTreeNode n = (DefaultMutableTreeNode) treeList.getLastSelectedPathComponent();
-        
+        UserViewUI ui;
         if(n == null || n.getAllowsChildren()) {
             dialogText.setText("Not an user ID!");
             dialog.setVisible(true);
         } else {
             User node = (User) treeList.getLastSelectedPathComponent();
-            new UserViewUI(root, node).setVisible(true);
+            ui = new UserViewUI(root, node);
+            ui.setVisible(true);
+//            while(ui.isShowing()) {
+//                this.msgSize = this.msgSize + ui.msgSize;
+//                System.out.println(msgSize);
+//            }
+            
         }
     }//GEN-LAST:event_userViewButtonActionPerformed
 
@@ -405,27 +402,6 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_groupIDTextFocusLost
 
-//    private boolean compareUserID(Group g) {
-//        return false;
-//    }
-//    
-//    private boolean compareGroupID(Group g, String id) {
-//        if(g.getID().equals(id)) {
-//            return true;
-//        }
-//        
-//        for(int i = 0; i < g.getGrpSize(); i++) {
-//            if (compareGroupID(g.getGroup().get(i), id)) {
-//                return true;
-//            }
-//        } 
-//        return false;
-//    }
-//    
-    private int msgSize() {
-        return 0;
-    }
-    
     /**
      * @param args the command line arguments
      */
@@ -442,15 +418,12 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdminControlPanelUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdminControlPanelUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdminControlPanelUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(AdminControlPanelUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        
         //</editor-fold>
         //</editor-fold>
 

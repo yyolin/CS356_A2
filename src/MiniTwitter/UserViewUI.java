@@ -6,7 +6,6 @@
 package MiniTwitter;
 
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import javax.swing.DefaultListModel;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -20,6 +19,8 @@ public class UserViewUI extends javax.swing.JFrame {
     private Group root;
     
     private User u = new User();
+    
+    public int msgSize;
     
     private DefaultListModel fList, mList;
 
@@ -76,10 +77,16 @@ public class UserViewUI extends javax.swing.JFrame {
         msgList = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle(u.getID());
         setMinimumSize(new java.awt.Dimension(400, 490));
         setName("ViewFrame"); // NOI18N
         setPreferredSize(new java.awt.Dimension(400, 490));
         setSize(new java.awt.Dimension(400, 490));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         UserViewPanel.setBounds(new java.awt.Rectangle(0, 0, 400, 490));
         UserViewPanel.setPreferredSize(new java.awt.Dimension(400, 490));
@@ -229,27 +236,51 @@ public class UserViewUI extends javax.swing.JFrame {
 
     private void followButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_followButtonActionPerformed
         String text = usrIDText.getText();
-        boolean alreadyIn = fList.contains(text);
+        boolean alreadyIn = false;
+        
+        for(int i = 0; i < u.getFollowings().size(); i++) {
+            if(u.getFollowings().get(i).equals(text)){
+                alreadyIn = true;
+                i = u.getFollowings().size();
+            }
+        }
         
         boolean userExist = false;
         DefaultMutableTreeNode ftemp = null;
         for(Enumeration e = root.depthFirstEnumeration(); e.hasMoreElements() && ftemp == null;) {
             DefaultMutableTreeNode uNode = (DefaultMutableTreeNode) e.nextElement();
-            if(uNode.toString().equals(text)) {
+            if(uNode.toString().equals(text) && (!uNode.getAllowsChildren())) {
                 userExist = true;
                 ftemp = uNode;
             }
         }
         
-        if((alreadyIn == false) && (userExist == true)) {
+        if((!alreadyIn) && (userExist == true) && (!u.getID().equals(text))) {
             u.getFollowings().add(text);
-            fList.addElement(text);
+            fList.addElement("  " + text);
+            ftemp = null;
+            User utemp = null;
+            for(Enumeration e = root.depthFirstEnumeration(); e.hasMoreElements() && utemp == null;) {
+                ftemp = (DefaultMutableTreeNode) e.nextElement();
+                if(!ftemp.getAllowsChildren()) {
+                    User uNode = (User) e.nextElement();
+                    if(uNode.getID().equals(text)) {
+                        uNode.getFollowers().add(text);
+                    }
+                }
+            }
         }
     }//GEN-LAST:event_followButtonActionPerformed
 
     private void postButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_postButtonActionPerformed
         String text = msgText.getText();
+        msgSize++;
     }//GEN-LAST:event_postButtonActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        
+    }//GEN-LAST:event_formWindowClosed
+    
     /**
      * @param args the command line arguments
      */
