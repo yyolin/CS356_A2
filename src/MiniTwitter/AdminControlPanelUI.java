@@ -5,7 +5,8 @@
  */
 package MiniTwitter;
 
-import java.util.ArrayList;
+import java.awt.Color;
+import java.util.Enumeration;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -15,7 +16,7 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
 
     private Group root = new Group("root");
     
-    private DefaultTreeModel treeModel = new javax.swing.tree.DefaultTreeModel(tree());
+    private DefaultTreeModel treeModel = new javax.swing.tree.DefaultTreeModel(root);
 
     /**
      * Creates new form AdminControlPanelUI
@@ -104,13 +105,31 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(treeList);
 
+        userIDText.setForeground(new java.awt.Color(102, 102, 102));
         userIDText.setText("Enter User ID");
         userIDText.setPreferredSize(new java.awt.Dimension(80, 25));
         userIDText.setSize(new java.awt.Dimension(80, 25));
+        userIDText.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                userIDTextFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                userIDTextFocusLost(evt);
+            }
+        });
 
+        groupIDText.setForeground(new java.awt.Color(102, 102, 102));
         groupIDText.setText("Enter Group ID");
         groupIDText.setPreferredSize(new java.awt.Dimension(80, 25));
         groupIDText.setSize(new java.awt.Dimension(80, 25));
+        groupIDText.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                groupIDTextFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                groupIDTextFocusLost(evt);
+            }
+        });
 
         addUserButton.setText("Add User");
         addUserButton.setToolTipText("Click to add user id to the list");
@@ -234,17 +253,17 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private javax.swing.tree.DefaultMutableTreeNode tree() {
-        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Root");
-        javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("");
-        javax.swing.tree.DefaultMutableTreeNode treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("");
-        for(int i = 0; i < root.getUsrSize(); i++) {
-            String usrID = root.getUser().get(i).getID();
-            treeNode2 = new javax.swing.tree.DefaultMutableTreeNode(usrID);
-            treeNode1.add(treeNode2);
-        }
-        return treeNode1;
-    }
+//    private javax.swing.tree.DefaultMutableTreeNode tree() {
+//        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode(root.getID(), true);
+//        javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("");
+//        for(int i = 0; i < root.getUsrSize(); i++) {
+//            String usrID = root.getUser().get(i).getID();
+//            treeNode2 = new javax.swing.tree.DefaultMutableTreeNode(usrID, false);
+//            treeNode1.add(treeNode2);
+//        }
+//        return treeNode1;
+//    }
+    
     private void usrTotalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usrTotalButtonActionPerformed
         int usrSize = 0;
 //        for(int i = 0; i < grp.size(); i++) {
@@ -268,23 +287,28 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         String text = userIDText.getText();
         if(text.equals("Enter User ID") || text.equals("")) { 
         } else {
-            boolean addUser = true;
-//            for(int i = 0; i < grp.size(); i++) {
-//                for(int j = 0; j < grp.get(i).getUser().size(); j++) {
-//                    if(grp.get(i).getUser().get(j).getID().equals(text)) {
-//                        addUser = false;
-//                    }
-//                }
-//            }
+            boolean alreadyIn = false;
+            User temp = null;
+            for(Enumeration e = root.depthFirstEnumeration(); e.hasMoreElements() && temp == null;) {
+                User gNode = (User) e.nextElement();
+                if(gNode.getID().equals(text)) {
+                    alreadyIn = true;
+                    temp = gNode;
+                }
+            }
             
-            if (addUser) {
+            if (alreadyIn == false) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) treeList.getLastSelectedPathComponent();
         
                 if(node == null) {
                     node = (DefaultMutableTreeNode) treeList.getModel().getRoot();
                 }
                 
-                DefaultMutableTreeNode childNode = new javax.swing.tree.DefaultMutableTreeNode(text);
+                if(!node.getAllowsChildren()) {
+                    node = (DefaultMutableTreeNode) node.getParent();
+                }
+                
+                User childNode = new User(text);
                 
                 treeModel.insertNodeInto(childNode, node, node.getChildCount());
                 
@@ -299,16 +323,34 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         String text = groupIDText.getText();
         if(text.equals("Enter Group ID") || text.equals("")) {
         } else {
-            boolean addGroup = true;
-//            for(int i = 0; i < grp.size(); i++) {
-//                if(grp.get(i).getID().equals(text)) {
-//                    addGroup = false;
-//                }
-//            }
+            boolean alreadyIn = false;
+            Group temp = null;
+            for(Enumeration e = root.breadthFirstEnumeration(); e.hasMoreElements() && temp == null;) {
+                Group gNode = (Group) e.nextElement();
+                if(gNode.getID().equals(text)) {
+                    alreadyIn = true;
+                    temp = gNode;
+                }
+            }
             
-            if(addGroup){
-                Group g = new Group(text);
+            if(alreadyIn == false){
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) treeList.getLastSelectedPathComponent();
+        
+                if(node == null) {
+                    node = (DefaultMutableTreeNode) treeList.getModel().getRoot();
+                } 
                 
+                if(!node.getAllowsChildren()) {
+                    node = (DefaultMutableTreeNode) node.getParent();
+                }
+
+                Group childNode = new Group(text);
+
+                treeModel.insertNodeInto(childNode, node, node.getChildCount());
+
+                treeList.scrollPathToVisible(new TreePath(childNode.getPath()));
+
+                groupIDText.setText("");
             }
         }
     }//GEN-LAST:event_addGroupButtonActionPerformed
@@ -321,9 +363,55 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_treeListValueChanged
 
+    private void userIDTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userIDTextFocusGained
+        if(userIDText.getText().equals("Enter User ID")) {
+            userIDText.setText("");
+            userIDText.setForeground(Color.black);
+        }
+    }//GEN-LAST:event_userIDTextFocusGained
+
+    private void userIDTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userIDTextFocusLost
+        if(userIDText.getText().equals("")) {
+            userIDText.setForeground(new Color(102, 102, 102));
+            userIDText.setText("Enter User ID");
+        }
+    }//GEN-LAST:event_userIDTextFocusLost
+
+    private void groupIDTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_groupIDTextFocusGained
+        if(groupIDText.getText().equals("Enter Group ID")) {
+            groupIDText.setText("");
+            groupIDText.setForeground(Color.black);
+        }
+    }//GEN-LAST:event_groupIDTextFocusGained
+
+    private void groupIDTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_groupIDTextFocusLost
+        if(groupIDText.getText().equals("")) {
+            groupIDText.setForeground(new Color(102, 102, 102));
+            groupIDText.setText("Enter Group ID");
+        }
+    }//GEN-LAST:event_groupIDTextFocusLost
+
+//    private boolean compareUserID(Group g) {
+//        return false;
+//    }
+//    
+//    private boolean compareGroupID(Group g, String id) {
+//        if(g.getID().equals(id)) {
+//            return true;
+//        }
+//        
+//        for(int i = 0; i < g.getGrpSize(); i++) {
+//            if (compareGroupID(g.getGroup().get(i), id)) {
+//                return true;
+//            }
+//        } 
+//        return false;
+//    }
+//    
     private int msgSize() {
         return 0;
     }
+    
     /**
      * @param args the command line arguments
      */

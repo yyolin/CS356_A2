@@ -2,8 +2,9 @@
 package MiniTwitter;
 
 import java.util.ArrayList;
+import javax.swing.tree.DefaultMutableTreeNode;
 
-public class User {
+public class User extends DefaultMutableTreeNode {
     private String id;
     
     private ArrayList<String> followers;
@@ -20,6 +21,7 @@ public class User {
     }
     
     public User(String id) {
+        super(id, false);
         this.id = id;
         this.followers = new ArrayList();
         this.followings = new ArrayList();
