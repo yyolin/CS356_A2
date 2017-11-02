@@ -29,7 +29,7 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
     
     private DefaultListModel mList = new DefaultListModel();
     
-    private DefaultTreeModel treeModel = new DefaultTreeModel(root);
+    private final DefaultTreeModel treeModel = new DefaultTreeModel(root);
     
     /**
      * Creates new form AdminControlPanelUI
@@ -59,12 +59,12 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         dialogText = new javax.swing.JLabel();
         userViewDialog = new javax.swing.JDialog();
         usrIDText = new javax.swing.JTextArea();
-        FollowButton = new javax.swing.JButton();
+        followButton = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         FollowingList = new javax.swing.JList();
         jScrollPane3 = new javax.swing.JScrollPane();
         msgText = new javax.swing.JTextArea();
-        TweetButton = new javax.swing.JButton();
+        tweetButton = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         msgList = new javax.swing.JList();
         mainPanel = new javax.swing.JPanel();
@@ -132,7 +132,12 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
             }
         });
 
-        FollowButton.setText("Follow");
+        followButton.setText("Follow");
+        followButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                followButtonActionPerformed(evt);
+            }
+        });
 
         FollowingList.setModel(fList);
         FollowingList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -156,7 +161,12 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(msgText);
 
-        TweetButton.setText("Tweet");
+        tweetButton.setText("Tweet");
+        tweetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tweetButtonActionPerformed(evt);
+            }
+        });
 
         msgList.setModel(mList);
         msgList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -175,11 +185,11 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
                     .addGroup(userViewDialogLayout.createSequentialGroup()
                         .addComponent(usrIDText, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(FollowButton))
+                        .addComponent(followButton))
                     .addGroup(userViewDialogLayout.createSequentialGroup()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(TweetButton))
+                        .addComponent(tweetButton))
                     .addComponent(jScrollPane2)
                     .addComponent(jScrollPane4))
                 .addContainerGap(44, Short.MAX_VALUE))
@@ -189,14 +199,14 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
             .addGroup(userViewDialogLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(userViewDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(FollowButton)
+                    .addComponent(followButton)
                     .addComponent(usrIDText, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(userViewDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TweetButton))
+                    .addComponent(tweetButton))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(139, Short.MAX_VALUE))
@@ -537,6 +547,47 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_msgTextFocusLost
 
+    private void followButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_followButtonActionPerformed
+        String text = usrIDText.getText();
+        boolean alreadyIn = false;
+        
+        for(int i = 0; i < userForDialog.getFollowings().size(); i++) {
+            if(userForDialog.getFollowings().get(i).equals(text)){
+                alreadyIn = true;
+                i = userForDialog.getFollowings().size();
+            }
+        }
+        
+        boolean userExist = false;
+        DefaultMutableTreeNode ftemp = null;
+        for(Enumeration e = root.depthFirstEnumeration(); e.hasMoreElements() && ftemp == null;) {
+            DefaultMutableTreeNode uNode = (DefaultMutableTreeNode) e.nextElement();
+            if(uNode.toString().equals(text) && (!uNode.getAllowsChildren())) {
+                userExist = true;
+                ftemp = uNode;
+            }
+        }
+        
+        if((!alreadyIn) && (userExist == true) && (!userForDialog.getID().equals(text))) {
+            userForDialog.getFollowings().add(text);
+            fList.addElement("  " + text);
+            User utemp = null;
+            for(Enumeration e = root.depthFirstEnumeration(); e.hasMoreElements() && utemp == null;) {
+                ftemp = (DefaultMutableTreeNode) e.nextElement();
+                if(!ftemp.getAllowsChildren()) {
+                    User uNode = (User) e.nextElement();
+                    if(uNode.getID().equals(text)) {
+                        uNode.getFollowers().add(text);
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_followButtonActionPerformed
+
+    private void tweetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tweetButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tweetButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -571,13 +622,12 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton FollowButton;
     private javax.swing.JList FollowingList;
-    private javax.swing.JButton TweetButton;
     private javax.swing.JButton addGroupButton;
     private javax.swing.JButton addUserButton;
     private javax.swing.JDialog dialog;
     private javax.swing.JLabel dialogText;
+    private javax.swing.JButton followButton;
     private javax.swing.JTextField groupIDText;
     private javax.swing.JButton grpTotalButton;
     private javax.swing.JScrollPane jScrollPane1;
@@ -590,6 +640,7 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
     private javax.swing.JButton msgTotalButton;
     private javax.swing.JButton posPctButton;
     private javax.swing.JTree treeList;
+    private javax.swing.JButton tweetButton;
     private javax.swing.JTextField userIDText;
     private javax.swing.JButton userViewButton;
     private javax.swing.JDialog userViewDialog;

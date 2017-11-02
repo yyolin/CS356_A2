@@ -18,7 +18,7 @@ public class UserViewUI extends javax.swing.JFrame {
     
     private Group root;
     
-    private User u = new User();
+    private User userInDialog = new User();
     
     public int msgSize;
     
@@ -38,19 +38,19 @@ public class UserViewUI extends javax.swing.JFrame {
     
     public UserViewUI(Group r, User u) {
         this.root = r;
-        this.u.setID(u.getID());
-        this.u.setFollowers(u.getFollowers());
-        this.u.setFollowings(u.getFollowings());
-        this.u.setMessage(u.getMessage());
+        this.userInDialog.setID(u.getID());
+        this.userInDialog.setFollowers(u.getFollowers());
+        this.userInDialog.setFollowings(u.getFollowings());
+        this.userInDialog.setMessage(u.getMessage());
         fList = new DefaultListModel();
         fList.addElement("following:");
-        for(int i = 0; i < this.u.getFollowings().size(); i++) {
-            fList.addElement("  " + this.u.getFollowings().get(i));
+        for(int i = 0; i < this.userInDialog.getFollowings().size(); i++) {
+            fList.addElement("  " + this.userInDialog.getFollowings().get(i));
         }
         mList = new DefaultListModel();
         mList.addElement("Messages: ");
-        for(int i = 0; i < this.u.getMessage().size(); i++) {
-            fList.addElement("  " + this.u.getMessage().get(i));
+        for(int i = 0; i < this.userInDialog.getMessage().size(); i++) {
+            fList.addElement("  " + this.userInDialog.getMessage().get(i));
         }
         initComponents();
         this.setLocationRelativeTo(null);
@@ -69,18 +69,17 @@ public class UserViewUI extends javax.swing.JFrame {
         usrIDText = new javax.swing.JTextArea();
         followButton = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        followingList = new javax.swing.JList<>();
+        followingList = new javax.swing.JList<String>();
         jScrollPane3 = new javax.swing.JScrollPane();
         msgText = new javax.swing.JTextArea();
         postButton = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
-        msgList = new javax.swing.JList<>();
+        msgList = new javax.swing.JList<String>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle(u.getID());
+        setTitle(userInDialog.getID());
         setMinimumSize(new java.awt.Dimension(400, 490));
         setName("ViewFrame"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(400, 490));
         setSize(new java.awt.Dimension(400, 490));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -88,7 +87,6 @@ public class UserViewUI extends javax.swing.JFrame {
             }
         });
 
-        UserViewPanel.setBounds(new java.awt.Rectangle(0, 0, 400, 490));
         UserViewPanel.setPreferredSize(new java.awt.Dimension(400, 490));
 
         usrIDText.setColumns(20);
@@ -116,7 +114,6 @@ public class UserViewUI extends javax.swing.JFrame {
         followingList.setMaximumSize(new java.awt.Dimension(40, 85));
         followingList.setMinimumSize(new java.awt.Dimension(40, 85));
         followingList.setPreferredSize(new java.awt.Dimension(40, 85));
-        followingList.setSize(new java.awt.Dimension(40, 135));
         jScrollPane2.setViewportView(followingList);
 
         msgText.setColumns(20);
@@ -146,7 +143,6 @@ public class UserViewUI extends javax.swing.JFrame {
 
         msgList.setModel(mList);
         msgList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        msgList.setBounds(new java.awt.Rectangle(0, 0, 40, 135));
         msgList.setMaximumSize(new java.awt.Dimension(40, 85));
         msgList.setMinimumSize(new java.awt.Dimension(40, 85));
         msgList.setPreferredSize(new java.awt.Dimension(40, 85));
@@ -238,10 +234,10 @@ public class UserViewUI extends javax.swing.JFrame {
         String text = usrIDText.getText();
         boolean alreadyIn = false;
         
-        for(int i = 0; i < u.getFollowings().size(); i++) {
-            if(u.getFollowings().get(i).equals(text)){
+        for(int i = 0; i < userInDialog.getFollowings().size(); i++) {
+            if(userInDialog.getFollowings().get(i).equals(text)){
                 alreadyIn = true;
-                i = u.getFollowings().size();
+                i = userInDialog.getFollowings().size();
             }
         }
         
@@ -255,8 +251,8 @@ public class UserViewUI extends javax.swing.JFrame {
             }
         }
         
-        if((!alreadyIn) && (userExist == true) && (!u.getID().equals(text))) {
-            u.getFollowings().add(text);
+        if((!alreadyIn) && (userExist == true) && (!userInDialog.getID().equals(text))) {
+            userInDialog.getFollowings().add(text);
             fList.addElement("  " + text);
             ftemp = null;
             User utemp = null;
