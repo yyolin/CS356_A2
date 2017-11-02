@@ -483,6 +483,7 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
             for(int i = 0; i < this.userForDialog.getMessage().size(); i++) {
                 fList.addElement("  " + this.userForDialog.getMessage().get(i));
             }
+            userViewDialog.setTitle(this.userForDialog.getID());
             userViewDialog.setVisible(true);
         }
     }//GEN-LAST:event_userViewButtonActionPerformed
@@ -585,7 +586,7 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
     }//GEN-LAST:event_followButtonActionPerformed
 
     private void tweetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tweetButtonActionPerformed
-        // TODO add your handling code here:
+        String text = msgText.getText();
     }//GEN-LAST:event_tweetButtonActionPerformed
 
     /**
