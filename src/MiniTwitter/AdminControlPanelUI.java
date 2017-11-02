@@ -7,6 +7,7 @@ package MiniTwitter;
 
 import java.awt.Color;
 import java.util.Enumeration;
+import javax.swing.DefaultListModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -16,11 +17,17 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
 
     private Group root = new Group("root");
     
+    private User userForDialog;
+    
     private int usrSize = 0;
     
     private int grpSize = 0;
     
     private int msgSize = 0;
+    
+    private DefaultListModel fList = new DefaultListModel();
+    
+    private DefaultListModel mList = new DefaultListModel();
     
     private DefaultTreeModel treeModel = new DefaultTreeModel(root);
     
@@ -28,9 +35,12 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
      * Creates new form AdminControlPanelUI
      */
     public AdminControlPanelUI() {
+        fList.addElement("Following: ");
+        mList.addElement("Messages: ");
         initComponents();
         this.setLocationRelativeTo(null);
         dialog.setLocationRelativeTo(null);
+        userViewDialog.setLocationRelativeTo(null);
         TreeSelectionModel model = treeList.getSelectionModel();
         model.setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         
@@ -47,8 +57,16 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
 
         dialog = new javax.swing.JDialog();
         dialogText = new javax.swing.JLabel();
-        UserViewDialog = new javax.swing.JDialog();
-        UsrIDText = new javax.swing.JTextArea();
+        userViewDialog = new javax.swing.JDialog();
+        usrIDText = new javax.swing.JTextArea();
+        FollowButton = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        FollowingList = new javax.swing.JList();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        msgText = new javax.swing.JTextArea();
+        TweetButton = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        msgList = new javax.swing.JList();
         mainPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         treeList = new javax.swing.JTree();
@@ -93,35 +111,95 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
 
-        UserViewDialog.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        UserViewDialog.setMinimumSize(new java.awt.Dimension(400, 480));
-        UserViewDialog.setName("UserViewDialog"); // NOI18N
-        UserViewDialog.setPreferredSize(new java.awt.Dimension(400, 490));
-        UserViewDialog.setSize(new java.awt.Dimension(400, 490));
+        userViewDialog.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        userViewDialog.setMinimumSize(new java.awt.Dimension(400, 480));
+        userViewDialog.setName("userViewDialog"); // NOI18N
+        userViewDialog.setPreferredSize(new java.awt.Dimension(400, 490));
+        userViewDialog.setSize(new java.awt.Dimension(400, 490));
 
-        UsrIDText.setColumns(20);
-        UsrIDText.setFont(new java.awt.Font("Lucida Sans", 0, 13)); // NOI18N
-        UsrIDText.setForeground(new java.awt.Color(102, 102, 102));
-        UsrIDText.setRows(1);
-        UsrIDText.setText("EnterUser ID");
-        UsrIDText.setAutoscrolls(false);
-        UsrIDText.setPreferredSize(new java.awt.Dimension(255, 35));
+        usrIDText.setColumns(20);
+        usrIDText.setForeground(new java.awt.Color(102, 102, 102));
+        usrIDText.setRows(1);
+        usrIDText.setText("Enter User ID");
+        usrIDText.setAutoscrolls(false);
+        usrIDText.setPreferredSize(new java.awt.Dimension(255, 35));
+        usrIDText.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                usrIDTextFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                usrIDTextFocusLost(evt);
+            }
+        });
 
-        javax.swing.GroupLayout UserViewDialogLayout = new javax.swing.GroupLayout(UserViewDialog.getContentPane());
-        UserViewDialog.getContentPane().setLayout(UserViewDialogLayout);
-        UserViewDialogLayout.setHorizontalGroup(
-            UserViewDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(UserViewDialogLayout.createSequentialGroup()
+        FollowButton.setText("Follow");
+
+        FollowingList.setModel(fList);
+        FollowingList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        FollowingList.setMinimumSize(new java.awt.Dimension(40, 85));
+        FollowingList.setSelectionModel(new NoSelectionModel());
+        FollowingList.setVisibleRowCount(5);
+        jScrollPane2.setViewportView(FollowingList);
+
+        msgText.setColumns(20);
+        msgText.setForeground(new java.awt.Color(102, 102, 102));
+        msgText.setRows(4);
+        msgText.setText("Tweet Message");
+        msgText.setPreferredSize(new java.awt.Dimension(165, 75));
+        msgText.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                msgTextFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                msgTextFocusLost(evt);
+            }
+        });
+        jScrollPane3.setViewportView(msgText);
+
+        TweetButton.setText("Tweet");
+
+        msgList.setModel(mList);
+        msgList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        msgList.setMinimumSize(new java.awt.Dimension(40, 85));
+        msgList.setSelectionModel(new NoSelectionModel());
+        msgList.setVisibleRowCount(5);
+        jScrollPane4.setViewportView(msgList);
+
+        javax.swing.GroupLayout userViewDialogLayout = new javax.swing.GroupLayout(userViewDialog.getContentPane());
+        userViewDialog.getContentPane().setLayout(userViewDialogLayout);
+        userViewDialogLayout.setHorizontalGroup(
+            userViewDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(userViewDialogLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(UsrIDText, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(135, Short.MAX_VALUE))
+                .addGroup(userViewDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(userViewDialogLayout.createSequentialGroup()
+                        .addComponent(usrIDText, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(FollowButton))
+                    .addGroup(userViewDialogLayout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(TweetButton))
+                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane4))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
-        UserViewDialogLayout.setVerticalGroup(
-            UserViewDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(UserViewDialogLayout.createSequentialGroup()
+        userViewDialogLayout.setVerticalGroup(
+            userViewDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(userViewDialogLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(UsrIDText, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(435, Short.MAX_VALUE))
+                .addGroup(userViewDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(FollowButton)
+                    .addComponent(usrIDText, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(userViewDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TweetButton))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(139, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -380,19 +458,22 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
 
     private void userViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userViewButtonActionPerformed
         DefaultMutableTreeNode n = (DefaultMutableTreeNode) treeList.getLastSelectedPathComponent();
-        UserViewUI ui;
         if(n == null || n.getAllowsChildren()) {
             dialogText.setText("Not an user ID!");
             dialog.setVisible(true);
         } else {
-            User node = (User) treeList.getLastSelectedPathComponent();
-            ui = new UserViewUI(root, node);
-            ui.setVisible(true);
-//            while(ui.isShowing()) {
-//                this.msgSize = this.msgSize + ui.msgSize;
-//                System.out.println(msgSize);
-//            }
-            
+            this.userForDialog = (User) treeList.getLastSelectedPathComponent();
+            fList = new DefaultListModel();
+            fList.addElement("following:");
+            for(int i = 0; i < this.userForDialog.getFollowings().size(); i++) {
+                fList.addElement("  " + this.userForDialog.getFollowings().get(i));
+            }
+            mList = new DefaultListModel();
+            mList.addElement("Messages: ");
+            for(int i = 0; i < this.userForDialog.getMessage().size(); i++) {
+                fList.addElement("  " + this.userForDialog.getMessage().get(i));
+            }
+            userViewDialog.setVisible(true);
         }
     }//GEN-LAST:event_userViewButtonActionPerformed
 
@@ -428,6 +509,34 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_groupIDTextFocusLost
 
+    private void usrIDTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_usrIDTextFocusGained
+        if(usrIDText.getText().equals("Enter User ID")) {
+            usrIDText.setText("");
+            usrIDText.setForeground(Color.black);
+        }
+    }//GEN-LAST:event_usrIDTextFocusGained
+
+    private void usrIDTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_usrIDTextFocusLost
+       if(usrIDText.getText().equals("")) {
+            usrIDText.setForeground(new Color(102, 102, 102));
+            usrIDText.setText("Enter User ID");
+        }
+    }//GEN-LAST:event_usrIDTextFocusLost
+
+    private void msgTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_msgTextFocusGained
+        if(msgText.getText().equals("Tweet Message")) {
+            msgText.setText("");
+            msgText.setForeground(Color.black);
+        }
+    }//GEN-LAST:event_msgTextFocusGained
+
+    private void msgTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_msgTextFocusLost
+        if(msgText.getText().equals("")) {
+            msgText.setForeground(new Color(102, 102, 102));
+            msgText.setText("Tweet Message");
+        }
+    }//GEN-LAST:event_msgTextFocusLost
+
     /**
      * @param args the command line arguments
      */
@@ -462,8 +571,9 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JDialog UserViewDialog;
-    private javax.swing.JTextArea UsrIDText;
+    private javax.swing.JButton FollowButton;
+    private javax.swing.JList FollowingList;
+    private javax.swing.JButton TweetButton;
     private javax.swing.JButton addGroupButton;
     private javax.swing.JButton addUserButton;
     private javax.swing.JDialog dialog;
@@ -471,12 +581,19 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
     private javax.swing.JTextField groupIDText;
     private javax.swing.JButton grpTotalButton;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JPanel mainPanel;
+    private javax.swing.JList msgList;
+    private javax.swing.JTextArea msgText;
     private javax.swing.JButton msgTotalButton;
     private javax.swing.JButton posPctButton;
     private javax.swing.JTree treeList;
     private javax.swing.JTextField userIDText;
     private javax.swing.JButton userViewButton;
+    private javax.swing.JDialog userViewDialog;
+    private javax.swing.JTextArea usrIDText;
     private javax.swing.JButton usrTotalButton;
     // End of variables declaration//GEN-END:variables
 }
