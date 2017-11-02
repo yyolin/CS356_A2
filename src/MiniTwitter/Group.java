@@ -18,6 +18,11 @@ public class Group extends DefaultMutableTreeNode{
         this.id = id;
     }
     
+    Group(String id, boolean allowChildren) {
+        super(id, allowChildren);
+        this.id = id;
+    }
+    
     Group(String id, Icon icon){
         super(id, true);
         this.id = id;

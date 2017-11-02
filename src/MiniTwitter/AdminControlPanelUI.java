@@ -16,8 +16,12 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
 
     private Group root = new Group("root");
     
-    private DefaultTreeModel treeModel = new javax.swing.tree.DefaultTreeModel(root);
-
+    private int usrSize = 0;
+    
+    private int grpSize = 0;
+    
+    private DefaultTreeModel treeModel = new DefaultTreeModel(root);
+    
     /**
      * Creates new form AdminControlPanelUI
      */
@@ -265,16 +269,12 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
 //    }
     
     private void usrTotalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usrTotalButtonActionPerformed
-        int usrSize = 0;
-//        for(int i = 0; i < grp.size(); i++) {
-//            usrSize = usrSize + grp.get(i).getUser().size();
-//        }
         dialogText.setText("Total Users: " + usrSize);
         dialog.setVisible(true);
     }//GEN-LAST:event_usrTotalButtonActionPerformed
 
     private void grpTotalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grpTotalButtonActionPerformed
-        //dialogText.setText("Total Groups: " + grp.size());
+        dialogText.setText("Total Groups: " + grpSize);
         dialog.setVisible(true);
     }//GEN-LAST:event_grpTotalButtonActionPerformed
 
@@ -288,12 +288,12 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         if(text.equals("Enter User ID") || text.equals("")) { 
         } else {
             boolean alreadyIn = false;
-            User temp = null;
+            DefaultMutableTreeNode temp = null;
             for(Enumeration e = root.depthFirstEnumeration(); e.hasMoreElements() && temp == null;) {
-                User gNode = (User) e.nextElement();
-                if(gNode.getID().equals(text)) {
+                DefaultMutableTreeNode uNode = (DefaultMutableTreeNode) e.nextElement();
+                if(uNode.toString().equals(text)) {
                     alreadyIn = true;
-                    temp = gNode;
+                    temp = uNode;
                 }
             }
             
@@ -314,7 +314,10 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
                 
                 treeList.scrollPathToVisible(new TreePath(childNode.getPath()));
                 
-                userIDText.setText("");
+                usrSize++;
+                
+                userIDText.setForeground(new Color(102, 102, 102));
+                userIDText.setText("Enter User ID");
             }
         }
     }//GEN-LAST:event_addUserButtonActionPerformed
@@ -324,10 +327,10 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         if(text.equals("Enter Group ID") || text.equals("")) {
         } else {
             boolean alreadyIn = false;
-            Group temp = null;
+            DefaultMutableTreeNode temp = null;
             for(Enumeration e = root.breadthFirstEnumeration(); e.hasMoreElements() && temp == null;) {
-                Group gNode = (Group) e.nextElement();
-                if(gNode.getID().equals(text)) {
+                DefaultMutableTreeNode gNode = (DefaultMutableTreeNode) e.nextElement();
+                if(gNode.toString().equals(text)) {
                     alreadyIn = true;
                     temp = gNode;
                 }
@@ -350,13 +353,24 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
 
                 treeList.scrollPathToVisible(new TreePath(childNode.getPath()));
 
-                groupIDText.setText("");
+                grpSize++;
+                
+                groupIDText.setForeground(new Color(102, 102, 102));
+                groupIDText.setText("Enter Group ID");
             }
         }
     }//GEN-LAST:event_addGroupButtonActionPerformed
 
     private void userViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userViewButtonActionPerformed
+        DefaultMutableTreeNode n = (DefaultMutableTreeNode) treeList.getLastSelectedPathComponent();
         
+        if(n == null || n.getAllowsChildren()) {
+            dialogText.setText("Not an user ID!");
+            dialog.setVisible(true);
+        } else {
+            User node = (User) treeList.getLastSelectedPathComponent();
+            new UserViewUI(root, node).setVisible(true);
+        }
     }//GEN-LAST:event_userViewButtonActionPerformed
 
     private void treeListValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_treeListValueChanged

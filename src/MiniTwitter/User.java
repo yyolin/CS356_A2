@@ -2,9 +2,8 @@
 package MiniTwitter;
 
 import java.util.ArrayList;
-import javax.swing.tree.DefaultMutableTreeNode;
 
-public class User extends DefaultMutableTreeNode {
+public class User extends Group {
     private String id;
     
     private ArrayList<String> followers;
@@ -32,20 +31,32 @@ public class User extends DefaultMutableTreeNode {
         return this.id;
     }
     
+    public void setID(String id) {
+        this.id = id;
+    }
+    
     public ArrayList getFollowers() {
         return this.followers;
+    }
+    
+    public void setFollowers(ArrayList<String> f) {
+        this.followers = f;
     }
     
     public ArrayList getFollowings() {
         return this.followings;
     }
     
-    public ArrayList getMessages() {
+    public void setFollowings(ArrayList<String> f) {
+        this.followings = f;
+    }
+    
+    public ArrayList getMessage() {
         return this.messages;
     }
     
-    public void setID(String id) {
-        this.id = id;
+    public void setMessage(ArrayList<String> m) {
+        this.messages = m;
     }
     
     public void addFollower(String f) {
