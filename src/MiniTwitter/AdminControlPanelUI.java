@@ -47,6 +47,8 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
 
         dialog = new javax.swing.JDialog();
         dialogText = new javax.swing.JLabel();
+        UserViewDialog = new javax.swing.JDialog();
+        UsrIDText = new javax.swing.JTextArea();
         mainPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         treeList = new javax.swing.JTree();
@@ -62,7 +64,6 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
 
         dialog.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         dialog.setMinimumSize(new java.awt.Dimension(100, 80));
-        dialog.setPreferredSize(new java.awt.Dimension(200, 100));
         dialog.setResizable(false);
         dialog.setSize(new java.awt.Dimension(200, 100));
 
@@ -92,6 +93,37 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
 
+        UserViewDialog.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        UserViewDialog.setMinimumSize(new java.awt.Dimension(400, 480));
+        UserViewDialog.setName("UserViewDialog"); // NOI18N
+        UserViewDialog.setPreferredSize(new java.awt.Dimension(400, 490));
+        UserViewDialog.setSize(new java.awt.Dimension(400, 490));
+
+        UsrIDText.setColumns(20);
+        UsrIDText.setFont(new java.awt.Font("Lucida Sans", 0, 13)); // NOI18N
+        UsrIDText.setForeground(new java.awt.Color(102, 102, 102));
+        UsrIDText.setRows(1);
+        UsrIDText.setText("EnterUser ID");
+        UsrIDText.setAutoscrolls(false);
+        UsrIDText.setPreferredSize(new java.awt.Dimension(255, 35));
+
+        javax.swing.GroupLayout UserViewDialogLayout = new javax.swing.GroupLayout(UserViewDialog.getContentPane());
+        UserViewDialog.getContentPane().setLayout(UserViewDialogLayout);
+        UserViewDialogLayout.setHorizontalGroup(
+            UserViewDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(UserViewDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(UsrIDText, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(135, Short.MAX_VALUE))
+        );
+        UserViewDialogLayout.setVerticalGroup(
+            UserViewDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(UserViewDialogLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(UsrIDText, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(435, Short.MAX_VALUE))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Admin Control Panel");
         setName("mainFrame"); // NOI18N
@@ -99,11 +131,9 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(640, 480));
 
         mainPanel.setForeground(new java.awt.Color(204, 204, 204));
-        mainPanel.setLocation(new java.awt.Point(0, 0));
 
         treeList.setModel(treeModel);
         treeList.setAutoscrolls(true);
-        treeList.setScrollsOnExpand(true);
         treeList.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
             public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
                 treeListValueChanged(evt);
@@ -114,7 +144,6 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         userIDText.setForeground(new java.awt.Color(102, 102, 102));
         userIDText.setText("Enter User ID");
         userIDText.setPreferredSize(new java.awt.Dimension(80, 25));
-        userIDText.setSize(new java.awt.Dimension(80, 25));
         userIDText.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 userIDTextFocusGained(evt);
@@ -127,7 +156,6 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         groupIDText.setForeground(new java.awt.Color(102, 102, 102));
         groupIDText.setText("Enter Group ID");
         groupIDText.setPreferredSize(new java.awt.Dimension(80, 25));
-        groupIDText.setSize(new java.awt.Dimension(80, 25));
         groupIDText.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 groupIDTextFocusGained(evt);
@@ -140,7 +168,6 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         addUserButton.setText("Add User");
         addUserButton.setToolTipText("Click to add user id to the list");
         addUserButton.setPreferredSize(new java.awt.Dimension(95, 29));
-        addUserButton.setSize(new java.awt.Dimension(95, 29));
         addUserButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addUserButtonActionPerformed(evt);
@@ -149,7 +176,6 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
 
         addGroupButton.setText("Add Group");
         addGroupButton.setPreferredSize(new java.awt.Dimension(95, 29));
-        addGroupButton.setSize(new java.awt.Dimension(95, 29));
         addGroupButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addGroupButtonActionPerformed(evt);
@@ -436,6 +462,8 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDialog UserViewDialog;
+    private javax.swing.JTextArea UsrIDText;
     private javax.swing.JButton addGroupButton;
     private javax.swing.JButton addUserButton;
     private javax.swing.JDialog dialog;
