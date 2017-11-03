@@ -25,6 +25,8 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
     
     private int msgSize = 0;
     
+    private int pp = 0;
+    
     DefaultListModel fList = new DefaultListModel();
     
     DefaultListModel mList = new DefaultListModel();
@@ -293,6 +295,11 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         });
 
         posPctButton.setText("Show Pos Pencentage");
+        posPctButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                posPctButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -446,7 +453,7 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
                     node = (DefaultMutableTreeNode) node.getParent();
                 }
 
-                User childNode = new User(text, true);
+                User childNode = new User(("(G)" + text), true);
 
                 treeModel.insertNodeInto(childNode, node, node.getChildCount());
 
@@ -582,8 +589,21 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
                 }
             }
         }
+        String[] text2 = text.split("\\s");
+        for(int i = 0; i < text2.length; i++) {
+            if(text2[i].equals("nice") || text2[i].equals("good") || text2[i].equals("wonderful")) {
+                pp++;
+                i = text2.length;
+            }
+        }
         msgSize++;
+        pp = pp/msgSize;
     }//GEN-LAST:event_tweetButtonActionPerformed
+
+    private void posPctButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_posPctButtonActionPerformed
+        dialogText.setText("Pos Percentage: " + pp + "%");
+        dialog.setVisible(true);
+    }//GEN-LAST:event_posPctButtonActionPerformed
 
     /**
      * @param args the command line arguments
