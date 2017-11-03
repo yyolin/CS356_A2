@@ -572,6 +572,16 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         String text = msgText.getText();
         this.mList.addElement("  " + userForDialog.getID() + ": " + text);
         userForDialog.getMessage().add("  " + userForDialog.getID() + ": " + text);
+        
+        DefaultMutableTreeNode ftemp = null;
+        for(Enumeration e = root.depthFirstEnumeration(); e.hasMoreElements() && ftemp == null;) {
+            User uNode = (User) e.nextElement();
+            for(int i = 0; i < userForDialog.getFollowers().size(); i++) {
+                if((!uNode.getAllowsChildren()) && uNode.toString().equals(userForDialog.getFollowers().get(i))) {
+                    uNode.getMessage().add("  " + userForDialog.getID() + ": " + text);
+                }
+            }
+        }
         msgSize++;
     }//GEN-LAST:event_tweetButtonActionPerformed
 
