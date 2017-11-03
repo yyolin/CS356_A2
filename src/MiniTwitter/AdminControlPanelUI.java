@@ -215,18 +215,12 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Admin Control Panel");
         setName("mainFrame"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(640, 480));
         setSize(new java.awt.Dimension(640, 480));
 
         mainPanel.setForeground(new java.awt.Color(204, 204, 204));
 
         treeList.setModel(treeModel);
         treeList.setAutoscrolls(true);
-        treeList.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
-            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
-                treeListValueChanged(evt);
-            }
-        });
         jScrollPane1.setViewportView(treeList);
 
         userIDText.setForeground(new java.awt.Color(102, 102, 102));
@@ -484,13 +478,11 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
                 fList.addElement("  " + this.userForDialog.getMessage().get(i));
             }
             userViewDialog.setTitle(this.userForDialog.getID());
+            usrIDText.setText("Enter User ID");
+            msgText.setText("Tweet Message");
             userViewDialog.setVisible(true);
         }
     }//GEN-LAST:event_userViewButtonActionPerformed
-
-    private void treeListValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_treeListValueChanged
-        
-    }//GEN-LAST:event_treeListValueChanged
 
     private void userIDTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userIDTextFocusGained
         if(userIDText.getText().equals("Enter User ID")) {
@@ -572,13 +564,13 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         if((!alreadyIn) && (userExist == true) && (!userForDialog.getID().equals(text))) {
             userForDialog.getFollowings().add(text);
             fList.addElement("  " + text);
-            User utemp = null;
-            for(Enumeration e = root.depthFirstEnumeration(); e.hasMoreElements() && utemp == null;) {
+            ftemp = null;
+            for(Enumeration e = root.depthFirstEnumeration(); e.hasMoreElements();) {
                 ftemp = (DefaultMutableTreeNode) e.nextElement();
                 if(!ftemp.getAllowsChildren()) {
-                    User uNode = (User) e.nextElement();
-                    if(uNode.getID().equals(text)) {
-                        uNode.getFollowers().add(text);
+                    User uN = (User) e.nextElement();
+                    if(uN.getID().equals(text)) {
+                        uN.getFollowers().add(text);
                     }
                 }
             }
