@@ -15,7 +15,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 public class AdminControlPanelUI extends javax.swing.JFrame {
 
-    private Group root = new Group("root");
+    private User root = new User("root", true);
     
     private User userForDialog;
     
@@ -25,9 +25,9 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
     
     private int msgSize = 0;
     
-    private DefaultListModel fList = new DefaultListModel();
+    DefaultListModel fList = new DefaultListModel();
     
-    private DefaultListModel mList = new DefaultListModel();
+    DefaultListModel mList = new DefaultListModel();
     
     private final DefaultTreeModel treeModel = new DefaultTreeModel(root);
     
@@ -396,7 +396,7 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
                 }
             }
             
-            if (alreadyIn == false) {
+            if (!alreadyIn) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) treeList.getLastSelectedPathComponent();
         
                 if(node == null) {
@@ -446,7 +446,7 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
                     node = (DefaultMutableTreeNode) node.getParent();
                 }
 
-                Group childNode = new Group(text);
+                User childNode = new User(text, true);
 
                 treeModel.insertNodeInto(childNode, node, node.getChildCount());
 
@@ -467,15 +467,15 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
             dialog.setVisible(true);
         } else {
             this.userForDialog = (User) treeList.getLastSelectedPathComponent();
-            fList = new DefaultListModel();
-            fList.addElement("following:");
+            this.fList.clear();
+            this.fList.addElement("following:");
             for(int i = 0; i < this.userForDialog.getFollowings().size(); i++) {
-                fList.addElement("  " + this.userForDialog.getFollowings().get(i));
+                this.fList.addElement("  " + this.userForDialog.getFollowings().get(i));
             }
-            mList = new DefaultListModel();
-            mList.addElement("Messages: ");
+            this.mList.clear();
+            this.mList.addElement("Messages: ");
             for(int i = 0; i < this.userForDialog.getMessage().size(); i++) {
-                fList.addElement("  " + this.userForDialog.getMessage().get(i));
+                this.mList.addElement("  " + this.userForDialog.getMessage().get(i));
             }
             userViewDialog.setTitle(this.userForDialog.getID());
             usrIDText.setText("Enter User ID");
@@ -542,35 +542,26 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
 
     private void followButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_followButtonActionPerformed
         String text = usrIDText.getText();
-        boolean alreadyIn = false;
         
-        for(int i = 0; i < userForDialog.getFollowings().size(); i++) {
-            if(userForDialog.getFollowings().get(i).equals(text)){
-                alreadyIn = true;
-                i = userForDialog.getFollowings().size();
+        if(!userForDialog.getID().equals(text)) {
+            boolean alreadyIn = false;
+
+            for(int i = 0; i < userForDialog.getFollowings().size(); i++) {
+                if(userForDialog.getFollowings().get(i).equals(text)){
+                    alreadyIn = true;
+                    i = userForDialog.getFollowings().size();
+                }
             }
-        }
-        
-        boolean userExist = false;
-        DefaultMutableTreeNode ftemp = null;
-        for(Enumeration e = root.depthFirstEnumeration(); e.hasMoreElements() && ftemp == null;) {
-            DefaultMutableTreeNode uNode = (DefaultMutableTreeNode) e.nextElement();
-            if(uNode.toString().equals(text) && (!uNode.getAllowsChildren())) {
-                userExist = true;
-                ftemp = uNode;
-            }
-        }
-        
-        if((!alreadyIn) && (userExist == true) && (!userForDialog.getID().equals(text))) {
-            userForDialog.getFollowings().add(text);
-            fList.addElement("  " + text);
-            ftemp = null;
-            for(Enumeration e = root.depthFirstEnumeration(); e.hasMoreElements();) {
-                ftemp = (DefaultMutableTreeNode) e.nextElement();
-                if(!ftemp.getAllowsChildren()) {
-                    User uN = (User) e.nextElement();
-                    if(uN.getID().equals(text)) {
-                        uN.getFollowers().add(text);
+            
+            if(!alreadyIn) {
+                DefaultMutableTreeNode ftemp = null;
+                for(Enumeration e = root.depthFirstEnumeration(); e.hasMoreElements() && ftemp == null;) {
+                    User uNode = (User) e.nextElement();
+                    if(uNode.toString().equals(text) && (!uNode.getAllowsChildren())) {
+                        userForDialog.getFollowings().add(text);
+                        fList.addElement("  " + uNode.getID());
+                        uNode.getFollowings().add(userForDialog.getID());
+                        ftemp = uNode;
                     }
                 }
             }
@@ -579,6 +570,9 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
 
     private void tweetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tweetButtonActionPerformed
         String text = msgText.getText();
+        this.mList.addElement("  " + userForDialog.getID() + ": " + text);
+        userForDialog.getMessage().add("  " + userForDialog.getID() + ": " + text);
+        msgSize++;
     }//GEN-LAST:event_tweetButtonActionPerformed
 
     /**
