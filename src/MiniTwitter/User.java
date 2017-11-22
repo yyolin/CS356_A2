@@ -1,79 +1,22 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package MiniTwitter;
 
 import java.util.ArrayList;
-import javax.swing.tree.DefaultMutableTreeNode;
 
-public class User extends DefaultMutableTreeNode {
-    private String id;
+public interface User {
+    public String id = null;
     
-    private ArrayList<String> followers;
+    public ArrayList<String> followers = new ArrayList();
     
-    private ArrayList<String> followings;
+    public ArrayList<String> followings = new ArrayList();
     
-    private ArrayList<String> messages;
+    public ArrayList<String> messages = new ArrayList();
     
-    public User() {
-        this.id = "";
-        this.followers = new ArrayList();
-        this.followings = new ArrayList();
-        this.messages = new ArrayList();
-    }
+    public String getID();
     
-    public User(String id) {
-        super(id, false);
-        this.id = id;
-        this.followers = new ArrayList();
-        this.followings = new ArrayList();
-        this.messages = new ArrayList();
-    }
-    
-    public User(String id, boolean ac) {
-        super(id, ac);
-        this.id = id;
-    }
-    
-    public String getID() {
-        return this.id;
-    }
-    
-    public void setID(String id) {
-        this.id = id;
-    }
-    
-    public ArrayList getFollowers() {
-        return this.followers;
-    }
-    
-    public void setFollowers(ArrayList<String> f) {
-        this.followers = f;
-    }
-    
-    public ArrayList getFollowings() {
-        return this.followings;
-    }
-    
-    public void setFollowings(ArrayList<String> f) {
-        this.followings = f;
-    }
-    
-    public ArrayList getMessage() {
-        return this.messages;
-    }
-    
-    public void setMessage(ArrayList<String> m) {
-        this.messages = m;
-    }
-    
-    public void addFollower(String f) {
-        this.followers.add(f);
-    }
-    
-    public void addFollowing(String f) {
-        this.followings.add(f);
-    }
-    
-    public void addMessage(String m) {
-        this.messages.add(m);
-    }
+    public void setID(String id);
 }

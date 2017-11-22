@@ -6,6 +6,7 @@
 package MiniTwitter;
 
 import java.awt.Color;
+import java.util.Calendar;
 import java.util.Enumeration;
 import javax.swing.DefaultListModel;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -15,9 +16,9 @@ import javax.swing.tree.TreeSelectionModel;
 
 public class AdminControlPanelUI extends javax.swing.JFrame {
 
-    private User root = new User("root", true);
+    private UserNode root = new UserNode("root", true);
     
-    private User userForDialog;
+    private UserNode userForDialog;
     
     private int usrSize = 0;
     
@@ -26,6 +27,14 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
     private int msgSize = 0;
     
     private int pp = 0;
+    
+    private Calendar c;
+    
+    private String lastID = "N/A";
+    
+    private String lastTime = "N/A";
+    
+    private boolean valid = true;
     
     DefaultListModel fList = new DefaultListModel();
     
@@ -81,6 +90,8 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         grpTotalButton = new javax.swing.JButton();
         msgTotalButton = new javax.swing.JButton();
         posPctButton = new javax.swing.JButton();
+        verifButton = new javax.swing.JButton();
+        lastButton = new javax.swing.JButton();
 
         dialog.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         dialog.setMinimumSize(new java.awt.Dimension(100, 80));
@@ -116,7 +127,6 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         userViewDialog.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         userViewDialog.setMinimumSize(new java.awt.Dimension(400, 480));
         userViewDialog.setName("userViewDialog"); // NOI18N
-        userViewDialog.setPreferredSize(new java.awt.Dimension(400, 490));
         userViewDialog.setSize(new java.awt.Dimension(400, 490));
 
         usrIDText.setColumns(20);
@@ -301,6 +311,20 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
             }
         });
 
+        verifButton.setText("Verify IDs");
+        verifButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verifButtonActionPerformed(evt);
+            }
+        });
+
+        lastButton.setText("Last Updated");
+        lastButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lastButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -319,9 +343,6 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addComponent(userIDText, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(userViewButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
@@ -329,7 +350,14 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
                                     .addComponent(grpTotalButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(msgTotalButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(posPctButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(usrTotalButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                                    .addComponent(usrTotalButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addComponent(userIDText, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addComponent(verifButton, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lastButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
@@ -347,7 +375,11 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
                             .addComponent(addGroupButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(30, 30, 30)
                         .addComponent(userViewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(60, 60, 60)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(verifButton, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                            .addComponent(lastButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
                         .addComponent(usrTotalButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(grpTotalButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -391,6 +423,7 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
 
     private void addUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserButtonActionPerformed
         String text = userIDText.getText();
+        
         if(text.equals("Enter User ID") || text.equals("")) { 
         } else {
             boolean alreadyIn = false;
@@ -414,7 +447,11 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
                     node = (DefaultMutableTreeNode) node.getParent();
                 }
                 
-                User childNode = new User(text);
+                String[] s = text.split("\\s+");
+                
+                valid = (s.length <= 1);
+                
+                UserNode childNode = new UserNode(text);
                 
                 treeModel.insertNodeInto(childNode, node, node.getChildCount());
                 
@@ -453,7 +490,7 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
                     node = (DefaultMutableTreeNode) node.getParent();
                 }
 
-                User childNode = new User(("(G)" + text), true);
+                UserNode childNode = new UserNode(("(G)" + text), true);
 
                 treeModel.insertNodeInto(childNode, node, node.getChildCount());
 
@@ -473,7 +510,7 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
             dialogText.setText("Not an user ID!");
             dialog.setVisible(true);
         } else {
-            this.userForDialog = (User) treeList.getLastSelectedPathComponent();
+            this.userForDialog = (UserNode) treeList.getLastSelectedPathComponent();
             this.fList.clear();
             this.fList.addElement("following:");
             for(int i = 0; i < this.userForDialog.getFollowings().size(); i++) {
@@ -488,6 +525,8 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
             usrIDText.setText("Enter User ID");
             msgText.setText("Tweet Message");
             userViewDialog.setVisible(true);
+            System.out.println(userForDialog.getID() + " created at " 
+                    + userForDialog.getCreateTime());
         }
     }//GEN-LAST:event_userViewButtonActionPerformed
 
@@ -563,7 +602,7 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
             if(!alreadyIn) {
                 DefaultMutableTreeNode ftemp = null;
                 for(Enumeration e = root.depthFirstEnumeration(); e.hasMoreElements() && ftemp == null;) {
-                    User uNode = (User) e.nextElement();
+                    UserNode uNode = (UserNode) e.nextElement();
                     if(uNode.toString().equals(text) && (!uNode.getAllowsChildren())) {
                         userForDialog.getFollowings().add(text);
                         fList.addElement("  " + uNode.getID());
@@ -579,13 +618,19 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         String text = msgText.getText();
         this.mList.addElement("  " + userForDialog.getID() + ": " + text);
         userForDialog.getMessage().add("  " + userForDialog.getID() + ": " + text);
+        c = Calendar.getInstance();
+        userForDialog.setLastUpdate(c);
+        lastID = userForDialog.getID();
+        lastTime = userForDialog.getLastUpdate();
+        System.out.println("Last Updated: " + lastID + " " + lastTime);
         
         DefaultMutableTreeNode ftemp = null;
         for(Enumeration e = root.depthFirstEnumeration(); e.hasMoreElements() && ftemp == null;) {
-            User uNode = (User) e.nextElement();
+            UserNode uNode = (UserNode) e.nextElement();
             for(int i = 0; i < userForDialog.getFollowers().size(); i++) {
                 if((!uNode.getAllowsChildren()) && uNode.toString().equals(userForDialog.getFollowers().get(i))) {
                     uNode.getMessage().add("  " + userForDialog.getID() + ": " + text);
+                    uNode.setLastUpdate(c);
                 }
             }
         }
@@ -605,38 +650,17 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
         dialog.setVisible(true);
     }//GEN-LAST:event_posPctButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AdminControlPanelUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void verifButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verifButtonActionPerformed
+        if(valid) {
+            System.out.println("All IDs are valid.");
+        } else {
+            System.out.println("Not all IDs are valid.");
         }
-        //</editor-fold>
-        //</editor-fold>
-        
-        //</editor-fold>
-        //</editor-fold>
+    }//GEN-LAST:event_verifButtonActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AdminControlPanelUI().setVisible(true);
-            }
-        });
-    }
+    private void lastButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastButtonActionPerformed
+        System.out.println("Last Updated: " + lastID + " " + lastTime);
+    }//GEN-LAST:event_lastButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList FollowingList;
@@ -651,6 +675,7 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JButton lastButton;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JList msgList;
     private javax.swing.JTextArea msgText;
@@ -663,5 +688,6 @@ public class AdminControlPanelUI extends javax.swing.JFrame {
     private javax.swing.JDialog userViewDialog;
     private javax.swing.JTextArea usrIDText;
     private javax.swing.JButton usrTotalButton;
+    private javax.swing.JButton verifButton;
     // End of variables declaration//GEN-END:variables
 }
